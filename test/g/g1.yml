@@ -1,0 +1,15 @@
+flows:
+
+  # -- default flow doc
+  default:
+    - task: http
+      in:
+        url: "https://google.com"
+      out: result
+
+    - if: ${not result.ok}
+      then:
+        - log: "task failed: ${result.error}"
+
+  inlineCommentedFlow: # it's a comment
+    - fail:
