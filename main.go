@@ -5,28 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
-	"regexp"
 
+	flower "github.com/alzabo/flower/pkg"
 	"gopkg.in/yaml.v3"
 )
 
-type flow struct {
-	name, doc, code, file string
-	line                  int
-}
-
-type flowFile struct {
-	path string
-}
-
-func (f *flowFile) contents() ([]byte, error) {
-	content, err := os.ReadFile(f.path)
-	return content, err
-}
-
-func flowsFromYaml(yamlFile string) (flows []flow, err error) {
+func flowsFromYaml(yamlFile string) (flows []flower.Flow, err error) {
 	var doc yaml.Node
 	var flowNodes []*yaml.Node
 
@@ -78,23 +63,18 @@ func flowsFromYaml(yamlFile string) (flows []flow, err error) {
 		encoder := yaml.NewEncoder(codeBuf)
 
 		if err = encoder.Encode(flowSteps); err != nil {
-			err = encoder.Close()
-			if err != nil {
-				return
-			}
+			return
+		}
+		if err = encoder.Close(); err != nil {
+			return
 		}
 
-		flowDoc := flowKey.LineComment
-		if len(flowKey.HeadComment) > 0 {
-			flowDoc = flowKey.HeadComment
-		}
-
-		flows = append(flows, flow{
-			name: flowKey.Value,
-			doc:  flowDoc,
-			code: codeBuf.String(),
-			line: flowKey.Line,
-			file: yamlFile,
+		flows = append(flows, flower.Flow{
+			Name:     flowKey.Value,
+			Doc:      flower.DocFromNode(flowKey),
+			Code:     codeBuf.String(),
+			Line:     flowKey.Line,
+			FlowFile: flower.FlowFile{Path: yamlFile},
 		})
 
 		//fmt.Println("index:", i, "value:", c.Value, "tag:", c.Tag, "content:", c.Content)
@@ -102,49 +82,15 @@ func flowsFromYaml(yamlFile string) (flows []flow, err error) {
 	return
 }
 
-func findYamlFiles(dir string) ([]string, error) {
-	var files []string
-	contents, err := os.ReadDir(dir)
-	if err != nil {
-		return files, err
-	}
-
-	for _, c := range contents {
-		if c.IsDir() {
-			nestedFiles, err := findYamlFiles(path.Join(dir, c.Name()))
-			if err != nil {
-				return files, err
-			}
-
-			files = append(files, nestedFiles...)
-			continue
-		}
-
-		match, err := regexp.MatchString("\\.ya?ml", c.Name())
-
-		if err != nil {
-			return files, err
-		}
-
-		if !match {
-			continue
-		}
-
-		files = append(files, path.Join(dir, c.Name()))
-	}
-
-	return files, nil
-}
-
 func main() {
-	var allFlows []flow
+	var allFlows []flower.Flow
 	dir, err := filepath.Abs("./test")
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	yamlFiles, err := findYamlFiles(dir)
+	yamlFiles, err := flower.FindYamlFiles(dir)
 
 	if err != nil {
 		fmt.Println("Could not find yaml files in", dir)
