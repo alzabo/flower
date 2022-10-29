@@ -1,6 +1,9 @@
 package flower
 
 import (
+	"bytes"
+	"errors"
+	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -22,10 +25,80 @@ func (f *FlowFile) Contents() ([]byte, error) {
 	return content, err
 }
 
-func DocFromNode(n *yaml.Node) string {
+func docFromNode(n *yaml.Node) string {
 	doc := n.LineComment
 	if len(n.HeadComment) > 0 {
 		doc = n.HeadComment
 	}
 	return doc
+}
+
+func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
+	var doc yaml.Node
+	var flowNodes []*yaml.Node
+
+	content, err := os.ReadFile(yamlFile)
+
+	if err != nil {
+		return
+	}
+
+	err = yaml.Unmarshal(content, &doc)
+
+	if err != nil {
+		return
+	}
+
+	for _, node := range doc.Content {
+		for i, inner := range node.Content {
+			// find the node named "flows" at column 1.
+			if inner.Column == 1 && inner.Value == "flows" {
+				// The node after will contain flow definitions
+				flowIdx := i + 1
+
+				// can this even happen?
+				if flowIdx >= len(node.Content) {
+					err = errors.New(fmt.Sprint("flows key found in", yamlFile, "but flow data could not be loaded"))
+					return
+				}
+
+				flowNodes = node.Content[flowIdx].Content
+				break
+			}
+		}
+	}
+
+	// Every 2 nodes will be
+	// - string: Flow key
+	// - sequence: Flow steps
+	for i := 0; i < len(flowNodes); i += 2 {
+		flowKey := flowNodes[i]
+		flowSteps := flowNodes[i+1]
+
+		if len(flowSteps.Content) == 0 {
+			// todo: debug
+			fmt.Println("No steps found for flow", flowKey.Value)
+			continue
+		}
+
+		codeBuf := new(bytes.Buffer)
+		encoder := yaml.NewEncoder(codeBuf)
+
+		if err = encoder.Encode(flowSteps); err != nil {
+			return
+		}
+		if err = encoder.Close(); err != nil {
+			return
+		}
+
+		flows = append(flows, Flow{
+			Name:     flowKey.Value,
+			Doc:      docFromNode(flowKey),
+			Code:     codeBuf.String(),
+			Line:     flowKey.Line,
+			FlowFile: FlowFile{Path: yamlFile},
+		})
+
+	}
+	return
 }
