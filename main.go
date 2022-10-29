@@ -1,13 +1,11 @@
+/*
+Copyright © 2022 <ryan@alzabo.io>
+
+*/
 package main
 
-import (
-	"fmt"
-
-	flower "github.com/alzabo/flower/pkg"
-)
+import "github.com/alzabo/flower/cmd"
 
 func main() {
-	allFlows, _ := flower.FlowsFromDirectory("./test")
-
-	fmt.Println("hi", allFlows)
+	cmd.Execute()
 }
