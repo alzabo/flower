@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 )
@@ -99,6 +100,31 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 			FlowFile: FlowFile{Path: yamlFile},
 		})
 
+	}
+	return
+}
+
+func FlowsFromDirectory(dir string) (flows []Flow, err error) {
+	dir, err = filepath.Abs("./test")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	yamlFiles, err := FindYamlFiles(dir)
+
+	if err != nil {
+		fmt.Println("Could not find yaml files in", dir)
+		return
+	}
+
+	for _, yamlFile := range yamlFiles {
+		newFlows, err := FlowsFromYaml(yamlFile)
+		if err != nil {
+			fmt.Println("An error occurred when reading flow data from file", yamlFile)
+			continue
+		}
+		flows = append(flows, newFlows...)
 	}
 	return
 }
