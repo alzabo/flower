@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -10,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
+var dirs []string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -39,10 +38,9 @@ func init() {
 	// will be global for your application.
 
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.flower.yaml)")
+	rootCmd.PersistentFlags().StringSliceVarP(&dirs, "dir", "d", []string{"./"}, "Directories to search for flow files")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//rootCmd.Flags().StringSliceP("dir", "d", []string{"./"}, "Directories to search for flow files")
 }
-
-

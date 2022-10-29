@@ -6,7 +6,20 @@ import (
 	"regexp"
 )
 
-func FindYamlFiles(dir string) ([]string, error) {
+func FindYamlFiles(dirs []string) ([]string, error) {
+	var files []string
+	var err error
+	for _, dir := range dirs {
+		f, err := walkForYaml(dir)
+		if err != nil {
+			return files, err
+		}
+		files = append(files, f...)
+	}
+	return files, err
+}
+
+func walkForYaml(dir string) ([]string, error) {
 	var files []string
 	dirFiles, err := os.ReadDir(dir)
 	if err != nil {
@@ -15,7 +28,7 @@ func FindYamlFiles(dir string) ([]string, error) {
 
 	for _, f := range dirFiles {
 		if f.IsDir() {
-			nestedFiles, err := FindYamlFiles(path.Join(dir, f.Name()))
+			nestedFiles, err := walkForYaml(path.Join(dir, f.Name()))
 			if err != nil {
 				return files, err
 			}
