@@ -1,6 +1,12 @@
 # Flows
 
+## Table of Contents
+
 {{ range . -}}
+* [{{ .Name }}](#{{ .Name }})
+{{ end -}}
+
+{{- range . }}
 ## {{ .Name }}
 
 {{- if .Doc }}
@@ -11,7 +17,8 @@
 {{ .Code }}
 ```
 
-Defined in [{{ .Path }}]({{ .Path }})
+Defined in [{{ .Path }}]({{ .Path }}#L{{ .Line }})
+[Return to Contents](#tableofcontents) 
 
 ------
 
