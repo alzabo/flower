@@ -1,9 +1,10 @@
+{{- $contentsTitle := "Table of Contents" -}}
 # Flows
 
-## Table of Contents
+## {{ $contentsTitle }}
 
 {{ range . -}}
-* [{{ .Name }}](#{{ .Name }})
+* [{{ .Name }}](#{{ .Name | kebabcase }})
 {{ end -}}
 
 {{- range . }}
@@ -19,7 +20,7 @@
 
 Defined in [{{ .Path }}]({{ .Path }}#L{{ .Line }})
 
-[⬆️ Return to Contents](#tableofcontents) 
+[⬆️ Return to Contents](#{{ $contentsTitle | kebabcase }}) 
 
 ------
 
