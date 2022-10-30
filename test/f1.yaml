@@ -1,7 +1,14 @@
 ---
 
 flows:
-  f1: []
+  # Flow that doesn't do anything
+  #
+  # This flow will do nothing. It accepts no inputs and
+  # has no outputs
+  flowWithLotsOfComments:
+  - step:
+    - in: this
+      out: that
   f1.1: []
   why: []
 

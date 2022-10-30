@@ -5,9 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
+
+var commentExpr *regexp.Regexp = regexp.MustCompile(`^#\s*`)
 
 type FlowFile struct {
 	Path string
@@ -25,11 +29,20 @@ func (f *FlowFile) Contents() ([]byte, error) {
 	return content, err
 }
 
+func parseDoc(d string) string {
+	var lines []string
+	for _, l := range strings.Split(d, "\n") {
+		lines = append(lines, commentExpr.ReplaceAllLiteralString(l, ""))
+	}
+	return strings.Join(lines, "\n")
+}
+
 func docFromNode(n *yaml.Node) string {
 	doc := n.LineComment
 	if len(n.HeadComment) > 0 {
 		doc = n.HeadComment
 	}
+	doc = parseDoc(doc)
 	return doc
 }
 

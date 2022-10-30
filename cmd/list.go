@@ -36,7 +36,6 @@ flower list -d ./somedir`,
 			buf := new(bytes.Buffer)
 			tpl.Execute(buf, flow)
 			fmt.Println(buf)
-			// fmt.Println(flow.Name)
 		}
 	},
 }
