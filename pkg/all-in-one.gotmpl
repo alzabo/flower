@@ -4,7 +4,7 @@
 ## {{ $contentsTitle }}
 
 {{ range . -}}
-* [{{ .Name }}](#{{ .Name | kebabcase }})
+* [{{ .Name }}](#{{ .Name | lower }})
 {{ end -}}
 
 {{- range . }}
