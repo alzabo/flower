@@ -128,13 +128,13 @@
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -158,13 +158,13 @@ Defined in [../concord/examples/ansible/concord.yml](../concord/examples/ansible
     debug: true
     verbose: 3
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -183,7 +183,7 @@ Defined in [../concord/examples/ansible_docker/concord.yml](../concord/examples/
     playbook: playbook/hello.yml
     dynamicInventoryFile: my_inventory.sh
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -204,14 +204,14 @@ Defined in [../concord/examples/ansible_dynamic_inventory/concord.yml](../concor
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        # pass the form field's value into the playbook
-        message: ${myForm.myMessage}
+      # pass the form field's value into the playbook
+      message: ${myForm.myMessage}
 
 ```
 
@@ -231,10 +231,10 @@ Defined in [../concord/examples/ansible_form/concord.yml](../concord/examples/an
   in:
     playbook: playbook/hello.yml
     inventory:
-        myHostGroup:
-            hosts: ${myForm.ips.split(",")}
+      myHostGroup:
+        hosts: ${myForm.ips.split(",")}
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -252,13 +252,13 @@ Defined in [../concord/examples/ansible_form_as_inventory/concord.yml](../concor
   in:
     playbook: playbook/hello.yml
     auth:
-        krb5:
-            user: "testid"
-            password: "PASSWORD"
+      krb5:
+        user: "testid"
+        password: "PASSWORD"
     inventory:
-        myHosts:
-            hosts:
-                - "testhost"
+      myHosts:
+        hosts:
+          - "testhost"
 
 ```
 
@@ -276,15 +276,15 @@ Defined in [../concord/examples/ansible_kerberos/concord.yml](../concord/example
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-                - "127.0.0.2"
-                - "127.0.0.3"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+          - "127.0.0.2"
+          - "127.0.0.3"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
     limit: "@playbook/hello.limit"
 
 ```
@@ -303,13 +303,13 @@ Defined in [../concord/examples/ansible_limit/concord.yml](../concord/examples/a
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     outVars:
-        - "myVar" # created using the `register` statement in the playbook
+      - "myVar" # created using the `register` statement in the playbook
 # `myVar` contains the variable values for all hosts in the play
 - log: ${myVar['127.0.0.1']['msg']}
 
@@ -334,21 +334,21 @@ Defined in [../concord/examples/ansible_out_vars/concord.yml](../concord/example
     playbook: playbook/hello.yml
     # remote server auth
     auth:
-        privateKey:
-            # remote user's name
-            user: "myuser"
-            # remote server's key
-            secret:
-                name: ${authForm.secretName}
-                password: ${authForm.password}
+      privateKey:
+        # remote user's name
+        user: "myuser"
+        # remote server's key
+        secret:
+          name: ${authForm.secretName}
+          password: ${authForm.password}
     # inventory data, should match the playbook's host groups
     inventory:
-        local:
-            hosts:
-                - "somehost.example.com"
+      local:
+        hosts:
+          - "somehost.example.com"
     # pass additional variables to the playbook
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -367,22 +367,22 @@ Defined in [../concord/examples/ansible_remote/concord.yml](../concord/examples/
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-                - "127.0.0.2"
-                - "127.0.0.3"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+          - "127.0.0.2"
+          - "127.0.0.3"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        makeItFail: "${makeItFail}"
+      makeItFail: "${makeItFail}"
   retry:
     # specify new task parameters on the retry
     in:
-        retry: true # force Ansible to re-use the existing *.retry file
-        # this bit is just for example
-        extraVars: # override the task's `extraVars` on retry
-            makeItFail: false # this time the playbook should succeed
+      retry: true # force Ansible to re-use the existing *.retry file
+      # this bit is just for example
+      extraVars: # override the task's `extraVars` on retry
+        makeItFail: false # this time the playbook should succeed
     times: 1
     delay: 3
 
@@ -406,15 +406,15 @@ Defined in [../concord/examples/ansible_retry/concord.yml](../concord/examples/a
         saveRetryFile: true # saves hello.retry as an attachment on playbook error
         limit: "${retryFile}" # default is null, will be a .retry file on retries
         inventory:
-            local:
-                hosts:
-                    - "127.0.0.1"
-                    - "127.0.0.2"
-                    - "127.0.0.3"
-                vars:
-                    ansible_connection: "local"
+          local:
+            hosts:
+              - "127.0.0.1"
+              - "127.0.0.2"
+              - "127.0.0.3"
+            vars:
+              ansible_connection: "local"
         extraVars:
-            makeItFail: "${makeItFail}"
+          makeItFail: "${makeItFail}"
   error:
     - if: "${(attempts + 1) >= maxAttempts}" # give up eventually
       then:
@@ -453,15 +453,15 @@ Defined in [../concord/examples/ansible_retry/concord.yml](../concord/examples/a
         saveRetryFile: true # saves hello.retry as an attachment on playbook error
         limit: "${retryFile}" # default is null, will be a .retry file on retries
         inventory:
-            local:
-                hosts:
-                    - "127.0.0.1"
-                    - "127.0.0.2"
-                    - "127.0.0.3"
-                vars:
-                    ansible_connection: "local"
+          local:
+            hosts:
+              - "127.0.0.1"
+              - "127.0.0.2"
+              - "127.0.0.3"
+            vars:
+              ansible_connection: "local"
         extraVars:
-            makeItFail: "${makeItFail}"
+          makeItFail: "${makeItFail}"
   error:
     - if: "${(attempts + 1) >= maxAttempts}" # give up eventually
       then:
@@ -500,18 +500,18 @@ Defined in [../concord/examples/ansible_retry/concord.yml](../concord/examples/a
     playbook: "playbook/hello.yml"
     # remote server auth
     auth:
-        privateKey:
-            # remote user's name
-            user: "app"
-            # remote server's key
-            secret:
-                name: "testKey"
+      privateKey:
+        # remote user's name
+        user: "app"
+        # remote server's key
+        secret:
+          name: "testKey"
     roles:
-        - name: "devtools/tekton-ansible"
+      - name: "devtools/tekton-ansible"
     inventory:
-        myServers:
-            hosts:
-                - "myRemoteHost"
+      myServers:
+        hosts:
+          - "myRemoteHost"
 
 ```
 
@@ -529,16 +529,16 @@ Defined in [../concord/examples/ansible_roles/concord.yml](../concord/examples/a
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
     debug: true
     outVars:
-        - "_stats" # register variable for concord ansible stats
+      - "_stats" # register variable for concord ansible stats
 - log: "${ _stats }" # will print {failures=[], skipped=[], changed=[], ok=[127.0.0.1], unreachable=[]}
 
 ```
@@ -557,11 +557,11 @@ Defined in [../concord/examples/ansible_stats/concord.yml](../concord/examples/a
   in:
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     vaultPassword: myVaultPassword
 
 ```
@@ -581,8 +581,8 @@ Defined in [../concord/examples/ansible_vault/concord.yml](../concord/examples/a
     playbook: playbook/hello.yml
     inventoryFile: inventory.ini
     groupVars:
-        - my_hosts:
-            secretName: myWindowsKey
+      - my_hosts:
+          secretName: myWindowsKey
 
 ```
 
@@ -600,7 +600,7 @@ Defined in [../concord/examples/ansible_windows/concord.yml](../concord/examples
 - form: approvalForm
   runAs:
     ldap:
-        group: "CN=Strati-SDE-Concord-sdeconcord,.*"
+      group: "CN=Strati-SDE-Concord-sdeconcord,.*"
 - if: ${approvalForm.approved}
   then:
     - log: "Approved =)"
@@ -640,9 +640,9 @@ Defined in [../concord/examples/context_injection/concord.yml](../concord/exampl
     lastName: "Appleseed"
     sum: "${1 + 2}"
     address:
-        city: Toronto
-        province: Ontario
-        country: Canada
+      city: Toronto
+      province: Ontario
+      country: Canada
 - log: "Hello, ${myForm.firstName} ${myForm.lastName}"
 - log: "We got your file and stored it as ${myForm.aFile}"
 - log: "You have following skills"
@@ -847,12 +847,12 @@ Defined in [../concord/examples/dynamic_form_values/concord.yml](../concord/exam
 # creating a form using an expression
 - set:
     myForm:
-        fields:
-            - firstName: {label: "First name", type: "string"}
-            - lastName: {label: "Last name", type: "string"}
-        values:
-            firstName: "John"
-            lastName: "Smith"
+      fields:
+        - firstName: {label: "First name", type: "string"}
+        - lastName: {label: "Last name", type: "string"}
+      values:
+        firstName: "John"
+        lastName: "Smith"
 - ${execution.form('myForm', myForm)}
 - log: "${myForm}"
 
@@ -953,7 +953,7 @@ Defined in [../concord/examples/external_script/concord.yml](../concord/examples
     sync: true
     # additional arguments
     arguments:
-        otherName: "${initiator.username}"
+      otherName: "${initiator.username}"
 - log: "Done! ${jobs} is completed"
 
 ```
@@ -995,16 +995,16 @@ Defined in [../concord/examples/fork/concord.yml](../concord/examples/fork/conco
     # the parent's cancellation only
     disableOnCancel: true
     forks:
-        # spawn multiple jobs with different parameters
-        - entryPoint: aJob
-          arguments:
-            color: "red"
-        - entryPoint: aJob
-          arguments:
-            color: "green"
-        - entryPoint: aJob
-          arguments:
-            color: "blue"
+      # spawn multiple jobs with different parameters
+      - entryPoint: aJob
+        arguments:
+          color: "red"
+      - entryPoint: aJob
+        arguments:
+          color: "green"
+      - entryPoint: aJob
+        arguments:
+          color: "blue"
   # out variable "myJobs" will contain a list of process IDs
   out:
     myJobs: ${jobs}
@@ -1130,8 +1130,8 @@ Defined in [../concord/examples/forms/concord.yml](../concord/examples/forms/con
 - form: myForm
   runAs:
     ldap:
-        - group: "CN=Strati-SDE-Concord-sdeconcord,.*"
-        - group: "CN=Open Source Developers-opensource_devs,.*"
+      - group: "CN=Strati-SDE-Concord-sdeconcord,.*"
+      - group: "CN=Open Source Developers-opensource_devs,.*"
 
 ```
 
@@ -1157,7 +1157,7 @@ Defined in [../concord/examples/forms_multi_group/concord.yml](../concord/exampl
 - call: myFlow
   in:
     myForm:
-        myField: "CCC"
+      myField: "CCC"
 - log: "Value: ${myForm.myField}"
 
 ```
@@ -1304,9 +1304,9 @@ Defined in [../concord/examples/generic_triggers/concord.yml](../concord/example
     action: clone
     url: git@github.com:myorg/myrepo.git
     privateKey:
-        org: myOrg # optional
-        secretName: mySecret
-        password: myPwd # optional
+      org: myOrg # optional
+      secretName: mySecret
+      password: myPwd # optional
     workingDir: myRepo
 # creating a new branch and pushing it to remote origin
 - task: git
@@ -1316,9 +1316,9 @@ Defined in [../concord/examples/generic_triggers/concord.yml](../concord/example
     action: createBranch
     url: git@github.com:myorg/myrepo.git
     privateKey:
-        org: myOrg # optional
-        secretName: mySecret
-        password: myPwd # optional
+      org: myOrg # optional
+      secretName: mySecret
+      password: myPwd # optional
     workingDir: myRepo
     baseBranch: feature-a # optional name of the branch to use as the starting point for the new branch
     newBranch: myNewBranch
@@ -1329,9 +1329,9 @@ Defined in [../concord/examples/generic_triggers/concord.yml](../concord/example
     action: merge
     url: git@github.com:myorg/myrepo.git
     privateKey:
-        org: myOrg # optional
-        secretName: mySecret
-        password: myPwd # optional
+      org: myOrg # optional
+      secretName: mySecret
+      password: myPwd # optional
     workingDir: myRepo
     sourceBranch: feature-a
     destinationBranch: myNewBranch
@@ -1576,7 +1576,7 @@ Defined in [../concord/examples/in_variables/concord.yml](../concord/examples/in
 
     playbook: playbook/hello.yml
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -1594,14 +1594,14 @@ Defined in [../concord/examples/inventory/concord.yml](../concord/examples/inven
   in:
     dockerImage: "walmartlabs/concord-ansible:latest"
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     playbook: playbook/hello.yml
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -1629,12 +1629,12 @@ Defined in [../concord/examples/inventory_lookup/concord.yml](../concord/example
     priority: "P4"
     # complex fields, the actual field names and values depend on the configuration of the JIRA instance
     customFieldsTypeFieldAttr:
-        customfield_10212: # environment
-            value: "Development"
-        customfield_10216: # severity
-            value: "4 - Cosmetic"
-        customfield_20400: # application/service (array of values)
-            - "2125921" # "SDE - Concord"
+      customfield_10212: # environment
+        value: "Development"
+      customfield_10216: # severity
+        value: "4 - Cosmetic"
+      customfield_20400: # application/service (array of values)
+        - "2125921" # "SDE - Concord"
 # the issue ID is stored as `issueId`
 - log: "Issue ID: ${issueId}"
 # add a comment
@@ -1655,10 +1655,10 @@ Defined in [../concord/examples/inventory_lookup/concord.yml](../concord/example
     transitionId: 321
     transitionComment: "Marking as Done"
     customFieldsTypeFieldAttr:
-        customfield_10229: # resolution
-            value: "Done"
-        customfield_20106: # release handling option
-            id: "24226" # "This is not going into production (ever)"
+      customfield_10229: # resolution
+        value: "Done"
+      customfield_20106: # release handling option
+        id: "24226" # "This is not going into production (ever)"
 # delete an existing issue
 - task: jira
   in:
@@ -1987,10 +1987,10 @@ Defined in [../concord/examples/noderoster/concord.yml](../concord/examples/node
 - set:
     x: 123
     y:
-        some:
-            nested: ["data", "in", "arrays"]
-            boolean: true
-            number: 234
+      some:
+        nested: ["data", "in", "arrays"]
+        boolean: true
+        number: 234
 
 ```
 
@@ -2074,7 +2074,7 @@ Defined in [../concord/examples/process_from_a_process/concord.yml](../concord/e
     sync: true
     # list of output variables
     outVars:
-        - result
+      - result
 - log: "${jobOut.result}"
 # starts a process from an existing project (it must be created beforehand)
 - task: concord
@@ -2103,7 +2103,7 @@ Defined in [../concord/examples/process_from_a_process2/concord.yml](../concord/
     action: start
     payload: example
     arguments:
-        name: "Concord"
+      name: "Concord"
     sync: true
 - log: "Done! ${jobs[0]} is completed"
 
@@ -2276,13 +2276,13 @@ Defined in [../concord/examples/runtime-v2/a_basic_example/concord/example.conco
   in:
     playbook: "playbook/hello.yml"
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     outVars:
-        - "myVar" # created using the `register` statement in the playbook
+      - "myVar" # created using the `register` statement in the playbook
   out: ansibleResult
 # `myVar` contains the variable values for all hosts in the play
 - log: "${ansibleResult.myVar['127.0.0.1']['msg']}"
@@ -2676,13 +2676,13 @@ Defined in [../concord/examples/secret_files/concord.yml](../concord/examples/se
     dockerImage: "walmartlabs/concord-ansible:latest"
     playbook: playbook/hello.yml
     inventory:
-        local:
-            hosts:
-                - "127.0.0.1"
-            vars:
-                ansible_connection: "local"
+      local:
+        hosts:
+          - "127.0.0.1"
+        vars:
+          ansible_connection: "local"
     extraVars:
-        greetings: "Hi there!"
+      greetings: "Hi there!"
 
 ```
 
@@ -2725,11 +2725,11 @@ Defined in [../concord/examples/secrets/concord.yml](../concord/examples/secrets
     username: "my bot"
     iconEmoji: ":chart_with_upwards_trend:"
     attachments:
-        - fallback: "Book your flights at https://flights.example.com/book/r123456"
-          actions:
-            - type: "button"
-              text: "Book flights"
-              url: "https://flights.example.com/book/r123456"
+      - fallback: "Book your flights at https://flights.example.com/book/r123456"
+        actions:
+          - type: "button"
+            text: "Book flights"
+            url: "https://flights.example.com/book/r123456"
 - log: notified
 
 ```
@@ -2794,16 +2794,16 @@ Defined in [../concord/examples/slackChannel/concord.yml](../concord/examples/sl
     #  host: "localhost"
     #  port: 25
     mail:
-        from: ${initiator.attributes.mail}
-        to: ${initiator.attributes.mail}
-        subject: "Howdy!"
-        template: "mail.mustache"
-        attachments:
-            - "first.txt"
-            - path: "second.txt"
-              disposition: "attachment" # optional, valid values: "attachment" or "inline"
-              description: "attachment description" # optional
-              name: "attachment name" # optional
+      from: ${initiator.attributes.mail}
+      to: ${initiator.attributes.mail}
+      subject: "Howdy!"
+      template: "mail.mustache"
+      attachments:
+        - "first.txt"
+        - path: "second.txt"
+          disposition: "attachment" # optional, valid values: "attachment" or "inline"
+          description: "attachment description" # optional
+          name: "attachment name" # optional
 - log: mail sent to ${initiator.attributes.mail}
 
 ```
@@ -2827,10 +2827,10 @@ Defined in [../concord/examples/smtp/concord.yml](../concord/examples/smtp/conco
     #  host: "localhost"
     #  port: 25
     mail:
-        from: ${initiator.attributes.mail}
-        to: ${initiator.attributes.mail}
-        subject: "Howdy!"
-        template: "mail.mustache.html"
+      from: ${initiator.attributes.mail}
+      to: ${initiator.attributes.mail}
+      subject: "Howdy!"
+      template: "mail.mustache.html"
 - log: mail sent to ${initiator.attributes.mail}
 
 ```

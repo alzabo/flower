@@ -96,7 +96,9 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 
 		codeBuf := new(bytes.Buffer)
 		encoder := yaml.NewEncoder(codeBuf)
+		encoder.SetIndent(2)
 
+		// TODO: Add key to code output, make map
 		if err = encoder.Encode(flowSteps); err != nil {
 			return
 		}
