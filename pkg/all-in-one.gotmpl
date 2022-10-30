@@ -1,0 +1,18 @@
+# Flows
+
+{{ range . -}}
+## {{ .Name }}
+
+{{- if .Doc }}
+{{ .Doc }}
+{{- end }}
+
+```yaml
+{{ .Code }}
+```
+
+Defined in [{{ .Path }}]({{ .Path }})
+
+------
+
+{{ end -}}

@@ -27,7 +27,7 @@ flower list -d ./somedir`,
 			fmt.Println("An error occurred")
 		}
 
-		tpl, err := template.New("ls").Parse("{{ .Name }}\t{{ .Doc }}")
+		tpl, err := template.New("ls").Parse("{{ .Name }}")
 		if err != nil {
 			panic(err)
 		}
