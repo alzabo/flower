@@ -37,7 +37,7 @@ func walkForYaml(dir string) ([]string, error) {
 			continue
 		}
 
-		match, err := regexp.MatchString("\\.ya?ml", f.Name())
+		match, err := regexp.MatchString(`\.ya?ml$`, f.Name())
 		if err != nil {
 			return files, err
 		}

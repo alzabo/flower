@@ -6,6 +6,7 @@ flows:
   # This flow will do nothing. It accepts no inputs and
   # has no outputs
   # Some sequencess may ${render} ${strangely}
+  # ${more.expr}
   flowWithLotsOfComments:
   - step:
     - in: this

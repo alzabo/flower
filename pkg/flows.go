@@ -12,7 +12,10 @@ import (
 )
 
 var cleanupExpr *regexp.Regexp = regexp.MustCompile(`(^#+\s*|#+$|[-=]{3,})`)
-var commentCleanup *regexp.Regexp = regexp.MustCompile(`[-=]{3,}`)
+
+// Match and capture sequences like ${foo.bar}. These render strangely
+// In GitHub Markdown
+var codeExpr *regexp.Regexp = regexp.MustCompile(`(\$\{[^}]*\})`)
 
 type FlowFile struct {
 	Path string
@@ -32,8 +35,10 @@ func (f *FlowFile) Contents() ([]byte, error) {
 
 func parseDoc(d string) string {
 	var lines []string
-	for _, l := range strings.Split(d, "\n") {
-		lines = append(lines, cleanupExpr.ReplaceAllLiteralString(l, ""))
+	for _, line := range strings.Split(d, "\n") {
+		line = cleanupExpr.ReplaceAllLiteralString(line, "")
+		line = codeExpr.ReplaceAllString(line, "`$1`")
+		lines = append(lines, line)
 	}
 	return strings.Join(lines, "\n")
 }
