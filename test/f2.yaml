@@ -1,3 +1,23 @@
 flows:
-  do-something: {}
+  # ----------------------------
+  # Flow with more banners
+  # This flow has 2 types of banners
+  #-----------------------------
+  #=============================
+  # This is the second bit
+  # This had banners too
+  # - Arg1
+  # - Arg2 
+  # ============================
+  do-something:
+  - call: idk
+  ###############################
+  ## Flow with banners         ##
+  ##                           ##
+  ## comments about the flow   ##
+  ## This flow doesn't do much ##
+  ###############################
   idk:
+  - call: default
+  - fail:
+      - idk why

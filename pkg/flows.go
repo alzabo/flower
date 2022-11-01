@@ -11,7 +11,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var commentExpr *regexp.Regexp = regexp.MustCompile(`^#\s*`)
+var cleanupExpr *regexp.Regexp = regexp.MustCompile(`(^#+\s*|#+$|[-=]{3,})`)
+var commentCleanup *regexp.Regexp = regexp.MustCompile(`[-=]{3,}`)
 
 type FlowFile struct {
 	Path string
@@ -32,7 +33,7 @@ func (f *FlowFile) Contents() ([]byte, error) {
 func parseDoc(d string) string {
 	var lines []string
 	for _, l := range strings.Split(d, "\n") {
-		lines = append(lines, commentExpr.ReplaceAllLiteralString(l, ""))
+		lines = append(lines, cleanupExpr.ReplaceAllLiteralString(l, ""))
 	}
 	return strings.Join(lines, "\n")
 }
