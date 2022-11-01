@@ -11,6 +11,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// These patterns are stripped from the raw flow comment
 var cleanupExpr *regexp.Regexp = regexp.MustCompile(`(^#+\s*|#+$|[-=]{3,})`)
 
 // Match and capture sequences like ${foo.bar}. These render strangely
@@ -57,34 +58,18 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 	var flowNodes []*yaml.Node
 
 	content, err := os.ReadFile(yamlFile)
-
 	if err != nil {
 		return
 	}
 
 	err = yaml.Unmarshal(content, &doc)
-
 	if err != nil {
 		return
 	}
 
-	for _, node := range doc.Content {
-		for i, inner := range node.Content {
-			// find the node named "flows" at column 1.
-			if inner.Column == 1 && inner.Value == "flows" {
-				// The node after will contain flow definitions
-				flowIdx := i + 1
-
-				// can this even happen?
-				if flowIdx >= len(node.Content) {
-					err = errors.New(fmt.Sprint("flows key found in", yamlFile, "but flow data could not be loaded"))
-					return
-				}
-
-				flowNodes = node.Content[flowIdx].Content
-				break
-			}
-		}
+	flowNodes, err = findKeyContent(&doc, "flows")
+	if err != nil {
+		return
 	}
 
 	// Every 2 nodes will be
@@ -100,22 +85,16 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 			continue
 		}
 
-		codeBuf := new(bytes.Buffer)
-		encoder := yaml.NewEncoder(codeBuf)
-		encoder.SetIndent(2)
-
 		// TODO: Add key to code output, make map
-		if err = encoder.Encode(flowSteps); err != nil {
-			return
-		}
-		if err = encoder.Close(); err != nil {
-			return
+		var codeStr string
+		if codeStr, err = encodeYaml(flowSteps); err != nil {
+			// TODO: debug message
 		}
 
 		flows = append(flows, Flow{
 			Name:     flowKey.Value,
 			Doc:      docFromNode(flowKey),
-			Code:     codeBuf.String(),
+			Code:     codeStr,
 			Line:     flowKey.Line,
 			FlowFile: FlowFile{Path: yamlFile},
 		})
@@ -125,12 +104,6 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 }
 
 func FlowsFromDirectories(dirs []string) (flows []Flow, err error) {
-	//dirs, err = filepath.Abs("./test")
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	yamlFiles, err := FindYamlFiles(dirs)
 
 	if err != nil {
@@ -147,4 +120,46 @@ func FlowsFromDirectories(dirs []string) (flows []Flow, err error) {
 		flows = append(flows, newFlows...)
 	}
 	return
+}
+
+func encodeYaml(node *yaml.Node) (string, error) {
+	buf := new(bytes.Buffer)
+	encoder := yaml.NewEncoder(buf)
+	encoder.SetIndent(2)
+
+	if err := encoder.Encode(node); err != nil {
+		return "", err
+	}
+	if err := encoder.Close(); err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
+}
+
+func findKeyContent(n *yaml.Node, key string) ([]*yaml.Node, error) {
+	var wantedNodes []*yaml.Node
+	for _, node := range n.Content {
+		if wantedNodes != nil {
+			break
+		}
+		for i, inner := range node.Content {
+			// find the node at column 1
+			if inner.Column == 1 && inner.Value == key {
+				// The node after will contain the definitions
+				keyIdx := i + 1
+
+				// can this even happen in a well-formed file?
+				if keyIdx >= len(node.Content) {
+					err := errors.New(fmt.Sprint("key", key, "found, but data could not found"))
+					return wantedNodes, err
+				}
+
+				wantedNodes = node.Content[keyIdx].Content
+				break
+			}
+		}
+	}
+
+	return wantedNodes, nil
 }

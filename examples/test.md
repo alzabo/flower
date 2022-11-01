@@ -21,7 +21,6 @@ Some sequencess may `${render}` `${strangely}`
 - step:
     - in: this
       out: that
-
 ```
 
 Defined in [test/f1.yaml](test/f1.yaml#L10)
@@ -46,7 +45,6 @@ This had banners too
 
 ```yaml
 - call: idk
-
 ```
 
 Defined in [test/f2.yaml](test/f2.yaml#L12)
@@ -69,7 +67,6 @@ This flow doesn't do much
 - call: default
 - fail:
     - idk why
-
 ```
 
 Defined in [test/f2.yaml](test/f2.yaml#L20)
@@ -91,7 +88,6 @@ Defined in [test/f2.yaml](test/f2.yaml#L20)
 - if: ${not result.ok}
   then:
     - log: "task failed: ${result.error}"
-
 ```
 
 Defined in [test/g/g1.yml](test/g/g1.yml#L4)
@@ -107,7 +103,6 @@ it's a comment
 
 ```yaml
 - fail:
-
 ```
 
 Defined in [test/g/g1.yml](test/g/g1.yml#L14)
