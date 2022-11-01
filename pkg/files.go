@@ -21,6 +21,7 @@ func FindYamlFiles(dirs []string) ([]string, error) {
 
 func walkForYaml(dir string) ([]string, error) {
 	var files []string
+	yamlFileExpr := regexp.MustCompile(`\.ya?ml$`)
 	dirFiles, err := os.ReadDir(dir)
 	if err != nil {
 		return files, err
@@ -37,10 +38,7 @@ func walkForYaml(dir string) ([]string, error) {
 			continue
 		}
 
-		match, err := regexp.MatchString(`\.ya?ml$`, f.Name())
-		if err != nil {
-			return files, err
-		}
+		match := yamlFileExpr.MatchString(f.Name())
 		if !match {
 			continue
 		}
