@@ -38,10 +38,11 @@ func parseDoc(d string) string {
 	var lines []string
 	for _, line := range strings.Split(d, "\n") {
 		line = cleanupExpr.ReplaceAllLiteralString(line, "")
-		line = codeExpr.ReplaceAllString(line, "`$1`")
 		lines = append(lines, line)
 	}
-	return strings.Join(lines, "\n")
+	doc := strings.TrimSpace(strings.Join(lines, "\n"))
+	doc = codeExpr.ReplaceAllString(doc, "`$1`")
+	return doc
 }
 
 func docFromNode(n *yaml.Node) string {
