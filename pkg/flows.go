@@ -21,6 +21,7 @@ var codeExpr *regexp.Regexp = regexp.MustCompile(`(\$\{[^}]*\})`)
 type FlowFile struct {
 	Path string
 }
+
 type Flow struct {
 	FlowFile
 	Name string
@@ -54,7 +55,7 @@ func docFromNode(n *yaml.Node) string {
 	return doc
 }
 
-func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
+func FlowsFromYaml(yamlFile string) (flows []*Flow, err error) {
 	var doc yaml.Node
 	var flowNodes []*yaml.Node
 
@@ -92,7 +93,7 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 			// TODO: debug message
 		}
 
-		flows = append(flows, Flow{
+		flows = append(flows, &Flow{
 			Name:     flowKey.Value,
 			Doc:      docFromNode(flowKey),
 			Code:     codeStr,
@@ -104,7 +105,7 @@ func FlowsFromYaml(yamlFile string) (flows []Flow, err error) {
 	return
 }
 
-func FlowsFromDirectories(dirs []string) (flows []Flow, err error) {
+func FlowsFromDirectories(dirs []string) (flows []*Flow, err error) {
 	yamlFiles, err := FindYamlFiles(dirs)
 
 	if err != nil {

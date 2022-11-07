@@ -25,7 +25,7 @@ func FlowDocsFromDirectories(dirs []string) (string, error) {
 	return doc, err
 }
 
-func allInOne(flows *[]Flow) (string, error) {
+func allInOne(flows *[]*Flow) (string, error) {
 	tpl, err := template.New("aio").Funcs(sprig.FuncMap()).Parse(aioTemplate)
 	if err != nil {
 		return "", err
