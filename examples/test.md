@@ -32,7 +32,6 @@ Defined in [test/f1.yaml](test/f1.yaml#L10)
 
 ## do-something
 
-
 Flow with more banners
 This flow has 2 types of banners
 
@@ -40,8 +39,7 @@ This flow has 2 types of banners
 This is the second bit
 This had banners too
 - Arg1
-- Arg2 
-
+- Arg2
 
 ```yaml
 - call: idk
@@ -56,12 +54,10 @@ Defined in [test/f2.yaml](test/f2.yaml#L12)
 
 ## idk
 
-
 Flow with banners         
 
 comments about the flow   
-This flow doesn't do much 
-
+This flow doesn't do much
 
 ```yaml
 - call: default
@@ -110,5 +106,4 @@ Defined in [test/g/g1.yml](test/g/g1.yml#L14)
 [⬆️ Return to Contents](#table-of-contents) 
 
 ------
-
 

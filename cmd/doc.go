@@ -4,8 +4,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	flower "github.com/alzabo/flower/pkg"
@@ -17,12 +15,10 @@ var docCmd = &cobra.Command{
 	Short: "Generate docs for flows",
 	Long:  `Generate documentation for flows`,
 	Run: func(cmd *cobra.Command, args []string) {
-		doc, err := flower.FlowDocsFromDirectories(dirs)
+		err := flower.FlowDocsFromDirectories(dirs)
 		if err != nil {
 			panic(err)
 		}
-
-		fmt.Println(doc)
 	},
 }
 

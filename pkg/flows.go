@@ -24,10 +24,11 @@ type FlowFile struct {
 
 type Flow struct {
 	FlowFile
-	Name string
-	Doc  string
-	Code string
-	Line int
+	Name     string
+	Doc      string
+	Code     string
+	Line     int
+	YamlNode *yaml.Node
 }
 
 func (f *FlowFile) Contents() ([]byte, error) {
@@ -99,8 +100,8 @@ func FlowsFromYaml(yamlFile string) (flows []*Flow, err error) {
 			Code:     codeStr,
 			Line:     flowKey.Line,
 			FlowFile: FlowFile{Path: yamlFile},
+			YamlNode: flowSteps,
 		})
-
 	}
 	return
 }
