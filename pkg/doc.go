@@ -12,13 +12,20 @@ import (
 //go:embed all-in-one.gotmpl
 var aioTemplate string
 
+type FlowTemplateBinding struct {
+	Flows []*Flow
+	Nodes map[string]*Node
+}
+
 func FlowDocsFromDirectories(dirs []string) error {
 	flows, err := FlowsFromDirectories(dirs)
 	if err != nil {
 		return err
 	}
 
-	err = allInOne(&flows)
+	nodes := FlowGraph(flows)
+
+	err = allInOne(FlowTemplateBinding{Flows: flows, Nodes: nodes})
 	if err != nil {
 		return err
 	}
@@ -26,14 +33,14 @@ func FlowDocsFromDirectories(dirs []string) error {
 	return err
 }
 
-func allInOne(flows *[]*Flow) error {
+func allInOne(binding FlowTemplateBinding) error {
 	tpl, err := template.New("aio").Funcs(sprig.FuncMap()).Parse(aioTemplate)
 	if err != nil {
 		return err
 	}
 
 	buf := new(bytes.Buffer)
-	err = tpl.Execute(buf, flows)
+	err = tpl.Execute(buf, binding)
 	if err != nil {
 		return err
 	}

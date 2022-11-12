@@ -2,11 +2,13 @@
 
 ## Table of Contents
 
+
 * [flowWithLotsOfComments](#flowwithlotsofcomments)
 * [do-something](#do-something)
 * [idk](#idk)
 * [default](#default)
 * [inlineCommentedFlow](#inlinecommentedflow)
+
 
 ## flowWithLotsOfComments
 
@@ -24,6 +26,9 @@ Some sequencess may `${render}` `${strangely}`
 ```
 
 Defined in [test/f1.yaml](test/f1.yaml#L10)
+
+| Calls |  | 
+| Called by | |
 
 [⬆️ Return to Contents](#table-of-contents) 
 
@@ -47,6 +52,9 @@ This had banners too
 
 Defined in [test/f2.yaml](test/f2.yaml#L12)
 
+| Calls | idk | 
+| Called by | |
+
 [⬆️ Return to Contents](#table-of-contents) 
 
 ------
@@ -66,6 +74,9 @@ This flow doesn't do much
 ```
 
 Defined in [test/f2.yaml](test/f2.yaml#L20)
+
+| Calls | default | 
+| Called by | |
 
 [⬆️ Return to Contents](#table-of-contents) 
 
@@ -88,6 +99,9 @@ Defined in [test/f2.yaml](test/f2.yaml#L20)
 
 Defined in [test/g/g1.yml](test/g/g1.yml#L4)
 
+| Calls |  | 
+| Called by | |
+
 [⬆️ Return to Contents](#table-of-contents) 
 
 ------
@@ -102,6 +116,9 @@ it's a comment
 ```
 
 Defined in [test/g/g1.yml](test/g/g1.yml#L14)
+
+| Calls |  | 
+| Called by | |
 
 [⬆️ Return to Contents](#table-of-contents) 
 

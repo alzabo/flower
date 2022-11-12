@@ -122,7 +122,35 @@ func FlowsFromDirectories(dirs []string) (flows []*Flow, err error) {
 		}
 		flows = append(flows, newFlows...)
 	}
+	FlowGraph(flows)
 	return
+}
+
+func FlowGraph(flows []*Flow) map[string]*Node {
+	nodeMap := make(map[string]*Node, 0)
+	//var nodes := []Node
+
+	for _, flow := range flows {
+		nodeMap[flow.Name] = &Node{Flow: flow}
+	}
+
+	for _, flow := range flows {
+		var steps []map[string]interface{}
+		yaml.Unmarshal([]byte(flow.Code), &steps)
+		for _, step := range steps {
+			for k, v := range step {
+				if k != "call" {
+					continue
+				}
+				callee := nodeMap[fmt.Sprint(v)]
+				caller := nodeMap[flow.Name]
+				edge := Edge{Caller: caller, Callee: callee}
+				caller.Out = append(caller.Out, &edge)
+				callee.In = append(callee.In, &edge)
+			}
+		}
+	}
+	return nodeMap
 }
 
 func encodeYaml(node *yaml.Node) (string, error) {

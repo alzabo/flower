@@ -3,11 +3,11 @@
 
 ## {{ $contentsTitle }}
 
-{{ range . -}}
+{{ range .Flows }}
 * [{{ .Name }}](#{{ .Name | lower }})
-{{ end -}}
+{{- end }}
 
-{{- range . }}
+{{ range .Flows }}
 ## {{ .Name }}
 
 {{- if .Doc }}
@@ -20,6 +20,13 @@
 ```
 
 Defined in [{{ .Path }}]({{ .Path }}#L{{ .Line }})
+
+{{ with (index $.Nodes .Name) -}}
+| Calls | {{ range .Out -}}
+{{ .Callee.Flow.Name }}
+{{- end }} | 
+| Called by | |
+{{- end }}
 
 [⬆️ Return to Contents](#{{ $contentsTitle | kebabcase }}) 
 
