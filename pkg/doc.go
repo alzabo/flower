@@ -23,9 +23,10 @@ func FlowDocsFromDirectories(dirs []string) error {
 		return err
 	}
 
-	nodes := FlowGraph(flows)
+	// Hack: fix this later?
+	//nodes := FlowGraph(flows)
 
-	err = allInOne(FlowTemplateBinding{Flows: flows, Nodes: nodes})
+	err = allInOne(FlowTemplateBinding{Flows: flows})
 	if err != nil {
 		return err
 	}
