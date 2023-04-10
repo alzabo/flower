@@ -122,7 +122,8 @@ func FlowsFromDirectories(dirs []string) (flows []*Flow, err error) {
 		}
 		flows = append(flows, newFlows...)
 	}
-	FlowGraph(flows)
+	// HACK: don't build flow graph
+	//FlowGraph(flows)
 	return
 }
 
